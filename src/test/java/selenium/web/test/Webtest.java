@@ -17,7 +17,9 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.AssertJUnit;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class Webtest {
@@ -35,7 +37,7 @@ public class Webtest {
 		AssertJUnit.assertTrue(!"cat02".equals(name));
 	}
 
-	@BeforeClass
+	@BeforeTest
 	public void initWebDriver() throws MalformedURLException{
 		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 		driver = new RemoteWebDriver(new URL("http://192.168.109.1:4444/wd/hub"), capabilities);
@@ -83,6 +85,11 @@ public class Webtest {
 		element = driver.findElement(By.xpath("//*[@id='form1:itemTable_data']/tr/td"));
 		String name = element.getText();
 		assertTestDelete(name);	
+	}
+	
+	@AfterTest
+	public void endTest(){
+		driver.close();
 	}
 	
 	public WebDriverWait getWebDriverWait(){
