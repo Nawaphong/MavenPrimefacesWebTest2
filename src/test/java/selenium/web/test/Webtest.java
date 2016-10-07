@@ -36,11 +36,9 @@ public class Webtest {
 
 	@BeforeClass
 	public void initWebDriver() throws MalformedURLException{
-		String Node = "http://192.168.109.1:4444/wd/hub";
-		DesiredCapabilities cap = DesiredCapabilities.firefox();
-//		cap.setCapability(FirefoxDriver.PROFILE);
-		cap.setBrowserName("firefox");
-		driver = new RemoteWebDriver(new URL(Node), cap);
+		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+		driver = new RemoteWebDriver(new URL("http://192.168.109.1:4444/wd/hub"), capabilities);
+		driver.manage().window().maximize();
 	}	
 	
 	@Test
