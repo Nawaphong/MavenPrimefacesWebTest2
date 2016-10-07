@@ -30,6 +30,7 @@ public class Webtest {
 		assertEquals("5", qty);
 		assertEquals("name", user);
 	}
+	
 	public static void assertTestDelete(String name){
 		AssertJUnit.assertTrue(!"cat02".equals(name));
 	}
