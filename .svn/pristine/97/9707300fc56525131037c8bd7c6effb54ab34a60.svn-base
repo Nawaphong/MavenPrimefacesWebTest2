@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      >
+    <h:head>
+        <title>Sale Item</title>
+    </h:head>
+    <h:body>
+        <h:form id="form1">
+            <p:growl id="messages" showDetail="true"/>
+            <p:panel header="Sale Item" style="width: 800px;"> 
+                <p:panelGrid id="editPanel" columns="2">
+                    <h:outputLabel for="item" value="Item Name: " />
+                    <p:inputText id="item" value="#{itemVM.item.name}"/>
+                    <h:outputLabel for="qty" value="Qyantity: " />
+                    <p:inputText id="qty" value="#{itemVM.item.quantity}"/>
+                    <h:outputLabel for="user_inp" value="User ID : " />
+					<p:selectOneMenu id="user_inp" value="#{itemVM.item.userId}">
+			            <f:selectItems value="#{itemEditView.users}" />
+			        </p:selectOneMenu>
+                    <f:facet name="footer">
+                        <h:commandButton value="Add Item" action="#{itemEditView.addAction}"/>
+                    </f:facet>
+                </p:panelGrid>
+                <p:spacer height="30px;"/>
+                <p:dataTable id="itemTable" value="#{itemEditView.itemList}" var="o"  widgetVar="50" style="width: 700px;" editable="true">
+                    <f:facet name="header">  
+                        Order List  
+                    </f:facet>
+                    <p:ajax event="rowEdit" listener="#{itemEditView.onEdit}" update=":form1:messages :form1:itemTable" />  
+                    <p:ajax event="rowEditCancel" listener="#{itemEditView.onCancel}" update=":form1:messages :form1:itemTable" /> 
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Item Name" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.name}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{o.name}" style="width:100%"/>  
+                            </f:facet>  
+                        </p:cellEditor> 
+                    </p:column>
+ 
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="Quantity" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{o.quantity}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:inputText value="#{o.quantity}" />  
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column>
+ 
+                    <p:column>
+                        <f:facet name="header">  
+                            <h:outputText value="User" />  
+                        </f:facet>
+                        <p:cellEditor>  
+                            <f:facet name="output">  
+                                <h:outputText value="#{itemEditView.getUserName(o.userId)}" />  
+                            </f:facet>  
+                            <f:facet name="input">  
+                                <p:selectOneMenu id="user" value="#{o.userId}">
+						            <f:selectItem itemLabel="Select One" itemValue="" />
+						            <f:selectItems value="#{itemEditView.users}" />
+						        </p:selectOneMenu>
+                            </f:facet>  
+                        </p:cellEditor>
+                    </p:column>               
+                    <p:column headerText="Options" style="width:50px">  
+                        <p:rowEditor />  
+                    </p:column> 
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
