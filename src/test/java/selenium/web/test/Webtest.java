@@ -21,7 +21,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 public class Webtest {
-	protected static WebDriver driver;
+	protected static RemoteWebDriver driver;
 	protected static WebDriverWait wait;
 	protected static WebElement element = null;
 	protected static JavascriptExecutor jsExecutor;
