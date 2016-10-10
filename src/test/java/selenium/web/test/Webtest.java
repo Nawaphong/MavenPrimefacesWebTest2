@@ -36,7 +36,7 @@ public class Webtest {
 	public static void assertTestUpdate(String name,String qty,String user){
 		assertEquals("cat02", name);
 		assertEquals("5", qty);
-		assertEquals("name", user);
+		assertEquals("test02", user);
 	}
 	public static void assertTestDelete(String name){
 		AssertJUnit.assertTrue(!"cat02".equals(name));
