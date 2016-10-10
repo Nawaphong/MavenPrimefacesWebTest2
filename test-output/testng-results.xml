@@ -2,12 +2,12 @@
 <testng-results skipped="0" failed="0" total="3" passed="3">
   <reporter-output>
   </reporter-output>
-  <suite name="Default suite" duration-ms="13053" started-at="2016-10-10T08:46:12Z" finished-at="2016-10-10T08:46:25Z">
+  <suite name="Default suite" duration-ms="7106" started-at="2016-10-10T10:08:06Z" finished-at="2016-10-10T10:08:13Z">
     <groups>
     </groups>
-    <test name="Default test" duration-ms="13053" started-at="2016-10-10T08:46:12Z" finished-at="2016-10-10T08:46:25Z">
+    <test name="Default test" duration-ms="7106" started-at="2016-10-10T10:08:06Z" finished-at="2016-10-10T10:08:13Z">
       <class name="selenium.web.test.Webtest">
-        <test-method status="PASS" signature="initWebDriver(java.lang.String)[pri:0, instance:selenium.web.test.Webtest@10bdf5e5]" name="initWebDriver" is-config="true" duration-ms="3345" started-at="2016-10-10T15:46:12Z" finished-at="2016-10-10T15:46:15Z">
+        <test-method status="PASS" signature="initWebDriver(java.lang.String)[pri:0, instance:selenium.web.test.Webtest@4e1d422d]" name="initWebDriver" is-config="true" duration-ms="3190" started-at="2016-10-10T17:08:06Z" finished-at="2016-10-10T17:08:09Z">
           <params>
             <param index="0">
               <value>
@@ -18,15 +18,15 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- initWebDriver -->
-        <test-method status="PASS" signature="TestA_insert()[pri:0, instance:selenium.web.test.Webtest@10bdf5e5]" name="TestA_insert" duration-ms="3674" started-at="2016-10-10T15:46:15Z" finished-at="2016-10-10T15:46:19Z">
+        <test-method status="PASS" signature="TestA_insert()[pri:0, instance:selenium.web.test.Webtest@4e1d422d]" name="TestA_insert" duration-ms="1491" started-at="2016-10-10T17:08:09Z" finished-at="2016-10-10T17:08:10Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- TestA_insert -->
-        <test-method status="PASS" signature="TestB_update()[pri:0, instance:selenium.web.test.Webtest@10bdf5e5]" name="TestB_update" duration-ms="4754" started-at="2016-10-10T15:46:19Z" finished-at="2016-10-10T15:46:23Z">
+        <test-method status="PASS" signature="TestB_update()[pri:0, instance:selenium.web.test.Webtest@4e1d422d]" name="TestB_update" duration-ms="1675" started-at="2016-10-10T17:08:10Z" finished-at="2016-10-10T17:08:12Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- TestB_update -->
-        <test-method status="PASS" signature="TestC_delete()[pri:0, instance:selenium.web.test.Webtest@10bdf5e5]" name="TestC_delete" duration-ms="1265" started-at="2016-10-10T15:46:23Z" finished-at="2016-10-10T15:46:25Z">
+        <test-method status="PASS" signature="TestC_delete()[pri:0, instance:selenium.web.test.Webtest@4e1d422d]" name="TestC_delete" duration-ms="732" started-at="2016-10-10T17:08:12Z" finished-at="2016-10-10T17:08:13Z">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- TestC_delete -->
