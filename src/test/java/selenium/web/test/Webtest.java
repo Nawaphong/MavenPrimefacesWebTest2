@@ -85,7 +85,7 @@ public class Webtest {
 		Thread.sleep(500);
 		driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt30']/span[1]")).click();
 		driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt30']/span[3]")).click();
-		driver.get("http://localhost:8080/MavenPrimefacesWebTest2/");
+		driver.get("http://hostjboss:8080/MavenPrimefacesWebTest2/");
 		element = driver.findElement(By.xpath("//*[@id='form1:itemTable_data']/tr/td"));
 		String name = element.getText();
 		assertTestDelete(name);	
