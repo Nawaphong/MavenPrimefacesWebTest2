@@ -22,6 +22,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.AssertJUnit;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -158,6 +159,12 @@ public class Webtest {
 		}
 
 	}
+	
+	@AfterTest
+	public void afterTest(){
+		driver.quit();
+	}
+	
 	@SuppressWarnings("rawtypes")
 	public Wait<WebDriver> getFluentWait(){
 		@SuppressWarnings("unchecked")
