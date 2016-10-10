@@ -19,33 +19,38 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 public class Webtest {
-	protected static RemoteWebDriver driver;
+	protected static WebDriver driver;
 	protected static WebDriverWait wait;
 	protected static WebElement element = null;
 	protected static JavascriptExecutor jsExecutor;
 	public static void assertTestUpdate(String name,String qty,String user){
 		assertEquals("cat02", name);
 		assertEquals("5", qty);
-		assertEquals("name", user);
+		assertEquals("test02", user);
 	}
-	
 	public static void assertTestDelete(String name){
 		AssertJUnit.assertTrue(!"cat02".equals(name));
 	}
-
+	@Parameters("browser")
 	@BeforeClass
-	public void initWebDriver() throws MalformedURLException{
-		String Node = "http://hostjboss:5556/wd/hub";
-		DesiredCapabilities cap = DesiredCapabilities.firefox();
-//		cap.setCapability(FirefoxDriver.PROFILE);
-		cap.setBrowserName("chrome");
-		driver = new RemoteWebDriver(new URL(Node), cap);
-//		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-//		driver = new RemoteWebDriver(new URL("http://10.0.75.1:4444/wd/hub"), capabilities);
-//		driver.manage().window().maximize();
+	public void initWebDriver(String browser) throws MalformedURLException{
+		if (browser.equalsIgnoreCase("firefox")) {
+			String Node = "http://hostjboss:5556/wd/hub";
+			DesiredCapabilities cap = DesiredCapabilities.firefox();
+			cap.setBrowserName("firefox");
+			driver = new RemoteWebDriver(new URL(Node), cap);
+			driver.get("http://localhost:8080/MavenPrimefacesWebTest2/");
+		} else if (browser.equalsIgnoreCase("chrome")) {
+			String Node = "http://hostjboss:5556/wd/hub";
+			DesiredCapabilities cap = DesiredCapabilities.chrome();
+			cap.setBrowserName("chrome");
+			driver = new RemoteWebDriver(new URL(Node), cap);
+			driver.get("http://hostjboss:8080/MavenPrimefacesWebTest2/");
+		}
 	}	
 	
 	@Test
@@ -56,13 +61,14 @@ public class Webtest {
 		driver.findElement(By.id("form1:user_inp")).click();
 		driver.findElement(By.xpath("//*[@id='form1:user_inp_1']")).click();
 		driver.findElement(By.xpath("//*[@id='form1:editPanel']/tfoot/tr/td/input")).click();
-		element = getWebDriverWait().until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='form1:itemTable:0:j_idt15']/div[1]")));
+		Thread.sleep(2000);
+		element = driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt15']/div[1]"));
 		AssertJUnit.assertNotNull(element);
 	}
 	
 	@Test
 	public void TestB_update() throws InterruptedException, AWTException{
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 		driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt30']/span[1]")).click();
 		element = driver.findElement(By.id("form1:itemTable:0:j_idt17"));
 		element.clear();
@@ -73,7 +79,7 @@ public class Webtest {
 		driver.findElement(By.id("form1:itemTable:0:user_label")).click();
 		driver.findElement(By.id("form1:itemTable:0:user_1")).click();
 		driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt30']/span[2]")).click();
-		Thread.sleep(500);
+		Thread.sleep(1000);
 		String name = driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt15']/div[1]")).getText();
 		String qty = driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt20']/div[1]")).getText();
 		String user = driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt25']/div[1]")).getText();
@@ -92,8 +98,8 @@ public class Webtest {
 	}
 	
 	@AfterTest
-	public void endTest(){
-		driver.close();
+	public void afterTest(){
+		driver.quit();
 	}
 	
 	public WebDriverWait getWebDriverWait(){

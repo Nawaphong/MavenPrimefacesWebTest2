@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Failed suite [Default suite]">
+  <parameter name="browser" value="chrome"/>
   <test name="Default test(failed)">
     <classes>
       <class name="selenium.web.test.Webtest">
         <methods>
+          <include name="TestB_update"/>
           <include name="initWebDriver"/>
-          <include name="endTest"/>
-          <include name="TestC_delete"/>
         </methods>
       </class> <!-- selenium.web.test.Webtest -->
     </classes>
