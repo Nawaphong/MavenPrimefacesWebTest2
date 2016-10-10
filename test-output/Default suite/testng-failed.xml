@@ -3,14 +3,13 @@
 <suite name="Failed suite [Default suite]">
   <test name="Default test(failed)">
     <classes>
-      <class name="selenium_WebTest.Webtest">
+      <class name="selenium.web.test.Webtest">
         <methods>
-          <include name="TestC_delete"/>
-          <include name="TestB_update"/>
-          <include name="TestA_insert"/>
           <include name="initWebDriver"/>
+          <include name="endTest"/>
+          <include name="TestC_delete"/>
         </methods>
-      </class> <!-- selenium_WebTest.Webtest -->
+      </class> <!-- selenium.web.test.Webtest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->
