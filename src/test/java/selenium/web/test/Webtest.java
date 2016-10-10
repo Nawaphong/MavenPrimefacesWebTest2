@@ -7,20 +7,26 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.AssertJUnit;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+
+import com.google.common.base.Function;
 
 public class Webtest {
 	protected static WebDriver driver;
@@ -30,7 +36,7 @@ public class Webtest {
 	public static void assertTestUpdate(String name,String qty,String user){
 		assertEquals("cat02", name);
 		assertEquals("5", qty);
-		assertEquals("test02", user);
+		assertEquals("name", user);
 	}
 	public static void assertTestDelete(String name){
 		AssertJUnit.assertTrue(!"cat02".equals(name));
@@ -43,7 +49,7 @@ public class Webtest {
 			DesiredCapabilities cap = DesiredCapabilities.firefox();
 			cap.setBrowserName("firefox");
 			driver = new RemoteWebDriver(new URL(Node), cap);
-			driver.get("http://localhost:8080/MavenPrimefacesWebTest2/");
+			driver.get("http://hostjboss:8080/MavenPrimefacesWebTest2/");
 		} else if (browser.equalsIgnoreCase("chrome")) {
 			String Node = "http://hostjboss:5556/wd/hub";
 			DesiredCapabilities cap = DesiredCapabilities.chrome();
@@ -61,15 +67,14 @@ public class Webtest {
 		driver.findElement(By.id("form1:user_inp")).click();
 		driver.findElement(By.xpath("//*[@id='form1:user_inp_1']")).click();
 		driver.findElement(By.xpath("//*[@id='form1:editPanel']/tfoot/tr/td/input")).click();
-		Thread.sleep(2000);
-		element = driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt15']/div[1]"));
+		element = getFluentWait().until(getFinderByLocatorXpath("//*[@id='form1:itemTable:0:j_idt15']/div[1]"));
 		AssertJUnit.assertNotNull(element);
 	}
 	
 	@Test
 	public void TestB_update() throws InterruptedException, AWTException{
-		Thread.sleep(3000);
-		driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt30']/span[1]")).click();
+		element = getFluentWait().until(getFinderByLocatorXpath("//*[@id='form1:itemTable:0:j_idt30']/span[1]"));
+		element.click();
 		element = driver.findElement(By.id("form1:itemTable:0:j_idt17"));
 		element.clear();
 		element.sendKeys("cat02");
@@ -88,18 +93,13 @@ public class Webtest {
 
 	@Test
 	public void TestC_delete() throws InterruptedException, AWTException{
-		Thread.sleep(500);
-		driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt30']/span[1]")).click();
+		element = getFluentWait().until(getFinderByLocatorXpath("//*[@id='form1:itemTable:0:j_idt30']/span[1]"));
+		element.click();
 		driver.findElement(By.xpath("//*[@id='form1:itemTable:0:j_idt30']/span[3]")).click();
 		driver.get("http://hostjboss:8080/MavenPrimefacesWebTest2/");
 		element = driver.findElement(By.xpath("//*[@id='form1:itemTable_data']/tr/td"));
 		String name = element.getText();
 		assertTestDelete(name);	
-	}
-	
-	@AfterTest
-	public void afterTest(){
-		driver.quit();
 	}
 	
 	public WebDriverWait getWebDriverWait(){
@@ -108,4 +108,61 @@ public class Webtest {
 		}
 		return wait;
 	} 
+	
+	public FluentWaitElementFinder fluentFinder = new FluentWaitElementFinder(null, driver);
+	public FluentWaitElementFinder getFinderByLocatorXpath(String idOfComponent) {
+		fluentFinder.setLocator(By.xpath(idOfComponent));
+		return fluentFinder;
+	}
+	public class FluentWaitElementFinder implements Function<WebDriver,WebElement>{
+		private By locator;
+		private WebDriver driver;
+		private int count = 0;
+		public FluentWaitElementFinder() {
+			super();
+		}
+
+		public FluentWaitElementFinder(By locator,WebDriver driver) {
+			super();
+			this.locator = locator;
+			this.driver = driver;
+		}
+
+//		@Override
+		public WebElement apply(WebDriver driver) {
+			return driver.findElement(this.locator);
+		}
+
+		public By getLocator() {
+			return locator;
+		}
+
+		public void setLocator(By locator) {
+			this.locator = locator;
+		}
+
+		public WebDriver getDriver() {
+			return driver;
+		}
+
+		public void setDriver(WebDriver driver) {
+			this.driver = driver;
+		}
+
+		public int getCount() {
+			return count;
+		}
+
+		public void setCount(int count) {
+			this.count = count;
+		}
+
+	}
+	@SuppressWarnings("rawtypes")
+	public Wait<WebDriver> getFluentWait(){
+		@SuppressWarnings("unchecked")
+		Wait<WebDriver> fluentWait = new FluentWait(driver).withTimeout(60, TimeUnit.SECONDS)
+				.pollingEvery(10, TimeUnit.SECONDS).ignoring(NoSuchElementException.class, StaleElementReferenceException.class);
+		return fluentWait;
+	}
 }
