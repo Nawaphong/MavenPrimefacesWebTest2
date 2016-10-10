@@ -17,9 +17,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.AssertJUnit;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class Webtest {
@@ -32,16 +30,20 @@ public class Webtest {
 		assertEquals("5", qty);
 		assertEquals("name", user);
 	}
-	
 	public static void assertTestDelete(String name){
 		AssertJUnit.assertTrue(!"cat02".equals(name));
 	}
 
-	@BeforeTest
+	@BeforeClass
 	public void initWebDriver() throws MalformedURLException{
-		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-		driver = new RemoteWebDriver(new URL("http://192.168.109.1:4444/wd/hub"), capabilities);
-		driver.manage().window().maximize();
+		String Node = "http://hostjboss:5556/wd/hub";
+		DesiredCapabilities cap = DesiredCapabilities.firefox();
+//		cap.setCapability(FirefoxDriver.PROFILE);
+		cap.setBrowserName("chrome");
+		driver = new RemoteWebDriver(new URL(Node), cap);
+//		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+//		driver = new RemoteWebDriver(new URL("http://10.0.75.1:4444/wd/hub"), capabilities);
+//		driver.manage().window().maximize();
 	}	
 	
 	@Test
@@ -85,11 +87,6 @@ public class Webtest {
 		element = driver.findElement(By.xpath("//*[@id='form1:itemTable_data']/tr/td"));
 		String name = element.getText();
 		assertTestDelete(name);	
-	}
-	
-	@AfterTest
-	public void endTest(){
-		driver.close();
 	}
 	
 	public WebDriverWait getWebDriverWait(){
