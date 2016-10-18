@@ -26,7 +26,6 @@ import com.sample.jpa.UserLocal;
 @ManagedBean(name = "itemEditView")
 @ViewScoped
 public class ItemEditView implements Serializable {
-
 	/**
 	 * 
 	 */
