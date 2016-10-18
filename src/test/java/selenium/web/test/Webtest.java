@@ -3,8 +3,6 @@ package selenium.web.test;
 import static org.testng.AssertJUnit.assertEquals;
 
 import java.awt.AWTException;
-import java.awt.Robot;
-import java.awt.event.KeyEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +15,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -30,23 +27,23 @@ import org.testng.annotations.Test;
 import com.google.common.base.Function;
 
 public class Webtest {
-	protected static WebDriver driver;
-	protected static WebDriverWait wait;
-	protected static WebElement element = null;
-	protected static JavascriptExecutor jsExecutor;
-	public static void assertTestUpdate(String name,String qty,String user){
+	protected WebDriver driver;
+	protected WebDriverWait wait;
+	protected WebElement element = null;
+	protected JavascriptExecutor jsExecutor;
+	public void assertTestUpdate(String name,String qty,String user){
 		assertEquals("cat02", name);
 		assertEquals("5", qty);
 		assertEquals("test02", user);
 	}
-	public static void assertTestDelete(String name){
+	public void assertTestDelete(String name){
 		AssertJUnit.assertTrue(!"cat02".equals(name));
 	}
 	@Parameters("browser")
 	@BeforeClass
 	public void initWebDriver(String browser) throws MalformedURLException{
 		if (browser.equalsIgnoreCase("firefox")) {
-			String Node = "http://hostjboss:5556/wd/hub";
+			String Node = "http://hostjboss:5555/wd/hub";
 			DesiredCapabilities cap = DesiredCapabilities.firefox();
 			cap.setBrowserName("firefox");
 			driver = new RemoteWebDriver(new URL(Node), cap);
@@ -57,13 +54,19 @@ public class Webtest {
 			cap.setBrowserName("chrome");
 			driver = new RemoteWebDriver(new URL(Node), cap);
 			driver.get("http://hostjboss:8080/MavenPrimefacesWebTest2/");
+		} else if (browser.equalsIgnoreCase("internet explorer")) {
+			String Node = "http://hostjboss:5557/wd/hub";
+			DesiredCapabilities cap = DesiredCapabilities.internetExplorer();
+			cap.setBrowserName("internet explorer");
+			driver = new RemoteWebDriver(new URL(Node), cap);
+			driver.get("http://hostjboss:8080/MavenPrimefacesWebTest2/");
 		}
 	}	
 	
 	@Test
 	public void TestA_insert() throws InterruptedException{
-		driver.get("http://hostjboss:8080/MavenPrimefacesWebTest2/");
-		driver.findElement(By.id("form1:item")).sendKeys("cat");
+		element = getFluentWait().until(getFinderByLocatorID("form1:item"));
+		element.sendKeys("cat");
 		driver.findElement(By.id("form1:qty")).sendKeys("3");
 		driver.findElement(By.id("form1:user_inp")).click();
 		driver.findElement(By.xpath("//*[@id='form1:user_inp_1']")).click();
@@ -74,6 +77,7 @@ public class Webtest {
 	
 	@Test
 	public void TestB_update() throws InterruptedException, AWTException{
+		Thread.sleep(2000);
 		element = getFluentWait().until(getFinderByLocatorXpath("//*[@id='form1:itemTable:0:j_idt30']/span[1]"));
 		element.click();
 		element = driver.findElement(By.id("form1:itemTable:0:j_idt17"));
@@ -113,6 +117,11 @@ public class Webtest {
 	public FluentWaitElementFinder fluentFinder = new FluentWaitElementFinder(null, driver);
 	public FluentWaitElementFinder getFinderByLocatorXpath(String idOfComponent) {
 		fluentFinder.setLocator(By.xpath(idOfComponent));
+	
+		return fluentFinder;
+	}
+	public FluentWaitElementFinder getFinderByLocatorID(String idOfComponent) {
+		fluentFinder.setLocator(By.id(idOfComponent));
 		return fluentFinder;
 	}
 	public class FluentWaitElementFinder implements Function<WebDriver,WebElement>{
